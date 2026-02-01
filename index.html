@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Visual Studio Code - index.js</title>
+    <style>
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background-color: #1e1e1e; color: #d4d4d4; overflow: hidden;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            width: 50px; height: 100%; background-color: #333333;
+            float: left; display: flex; flex-direction: column;
+            align-items: center; padding-top: 10px; cursor: pointer;
+            z-index: 101; position: relative;
+        }
+        .icon {
+            width: 30px; height: 30px; margin-bottom: 20px;
+            opacity: 0.5; transition: 0.3s; font-size: 20px;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .icon:hover { opacity: 1; }
+
+        /* 内容区 */
+        .main-content { margin-left: 50px; height: 100%; display: flex; flex-direction: column; }
+        
+        .tabs {
+            background-color: #252526; height: 35px; display: flex;
+            align-items: center; padding-left: 10px; font-size: 13px;
+        }
+        .tab {
+            background-color: #1e1e1e; padding: 8px 20px;
+            margin-right: 1px; border-top: 1px solid #007acc; color: #fff;
+        }
+
+        /* 可编辑的代码区 */
+        .code-editor {
+            padding: 20px; font-size: 14px; line-height: 1.6;
+            color: #9cdcfe; flex-grow: 1; outline: none;
+            overflow-y: auto; white-space: pre-wrap; word-break: break-all;
+            background-color: #1e1e1e;
+        }
+        .code-keyword { color: #569cd6; } /* 模拟高亮 */
+        .code-comment { color: #6a9955; }
+
+        /* 隐藏的摸鱼层 */
+        #fish-layer {
+            display: none; position: absolute;
+            top: 35px; left: 50px; right: 0; bottom: 0;
+            background: white; z-index: 100;
+        }
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* 状态栏 */
+        .status-bar {
+            background-color: #007acc; height: 22px; position: fixed;
+            bottom: 0; width: 100%; font-size: 12px; color: white;
+            display: flex; align-items: center; padding-left: 10px; z-index: 102;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="icon" onclick="toggleFish()">📂</div>
+        <div class="icon">🔍</div>
+        <div class="icon">🌿</div>
+        <div class="icon" onclick="backToWork()">⚙️</div>
+    </div>
+
+    <div class="main-content">
+        <div class="tabs">
+            <div class="tab">index.js</div>
+            <div style="padding-left: 10px; opacity: 0.5;">server.py</div>
+        </div>
+
+        <!-- 可编辑区域：设置 contenteditable="true" -->
+        <div class="code-editor" id="code-area" contenteditable="true" spellcheck="false">
+<span class="code-keyword">import</span> { useEffect } <span class="code-keyword">from</span> 'react';
+
+<span class="code-comment">// TODO: 2026年Q1 核心逻辑优化</span>
+<span class="code-keyword">async function</span> <span style="color: #dcdcaa;">initializeService</span>() {
+    <span class="code-keyword">const</span> data = <span class="code-keyword">await</span> fetch('/api/v1/system/status');
+    <span class="code-keyword">return</span> data.json();
+}
+
+<span class="code-comment">// 在此处继续编写你的“漂亮代码”...</span>
+</div>
+
+        <div id="fish-layer">
+             // 下面是你的浏览链接
+            <iframe src="https://play9377.github.io/myblog2/"></iframe>
+        </div>
+    </div>
+
+    <div class="status-bar" id="status-text">
+        Spaces: 4 | UTF-8 | JavaScript
+    </div>
+
+    <script>
+        const fishLayer = document.getElementById('fish-layer');
+        const codeArea = document.getElementById('code-area');
+        const originalTitle = "Visual Studio Code - index.js";
+
+        function toggleFish() {
+            if (fishLayer.style.display === 'none' || fishLayer.style.display === '') {
+                fishLayer.style.display = 'block';
+                document.title = "Google";
+                // 失去焦点，防止按空格触发编辑
+                codeArea.blur();
+            } else {
+                backToWork();
+            }
+        }
+
+        function backToWork() {
+            fishLayer.style.display = 'none';
+            document.title = originalTitle;
+            codeArea.focus(); // 切回来时自动聚焦，方便继续“写代码”
+        }
+
+        // 监听按键
+        document.addEventListener('keydown', (e) => {
+            // 如果按下的是空格键
+            if (e.code === 'Space') {
+                // 如果当前处于摸鱼模式，立即切换
+                if (fishLayer.style.display === 'block') {
+                    e.preventDefault(); 
+                    backToWork();
+                }
+                // 如果在代码区输入，空格按键正常工作
+            }
+        });
+
+        // 模拟状态栏行列信息
+        codeArea.addEventListener('input', () => {
+            const selection = window.getSelection();
+            const text = codeArea.innerText;
+            document.getElementById('status-text').innerText = `Spaces: 4 | UTF-8 | JavaScript | Length: ${text.length}`;
+        });
+    </script>
+</body>
+</html>
